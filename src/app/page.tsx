@@ -1,5 +1,5 @@
 "use client";
-import ProductCard from "@/components/ProductCard";
+import ProductGrid from "@/components/ProductGrid";
 import { getProducts } from "./api/products/getProducts";
 import { useEffect, useState } from "react";
 import { Product } from "@/lib/constants";
@@ -20,13 +20,9 @@ export default function Home() {
     fetchAllProducts();
   }, []);
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        {products !== undefined &&
-          products.map((product) => {
-            return <ProductCard key={product._id} product={product} />;
-          })}
-      </main>
+    <div className="flex flex-col justify-start items-start p-5 font-[family-name:var(--font-geist-sans)]">
+      <h1 className="text-2xl font-semibold m-3">Products</h1>
+      <ProductGrid products={products} />
     </div>
   );
 }
