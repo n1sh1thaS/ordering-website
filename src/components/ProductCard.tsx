@@ -8,7 +8,7 @@ export default function ProductCard({ product }: Props) {
   return (
     <div className="h-[280px] w-[220px] flex flex-col bg-slate-100 shadow-lg rounded-2xl hover:bg-slate-200 transition-all">
       <img
-        src={product.image}
+        src={product.image == "" ? "./product-placeholder.jpg" : product.image}
         alt={product.title}
         className="max-w-full h-2/3 p-1 object-cover rounded-2xl"
       />
