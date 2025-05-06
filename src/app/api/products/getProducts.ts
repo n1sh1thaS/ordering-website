@@ -3,10 +3,17 @@ import clientPromise from "@/lib/db";
 import { WithId } from "mongodb";
 import { Document } from "bson"
 import { Product } from "@/lib/constants";
-export async function getProducts(){
+
+export async function getProducts(query: string){
     try {
         const client = await clientPromise;
-        const data: WithId<Document>[] = await client.db('store').collection('products').find({}, {projection: {_id: 1, Title: 1, 'Variant SKU': 1, 'Variant Price': 1, 'Image Src': 1}}).toArray();
+
+        let data: WithId<Document>[];
+        if (query !== ''){
+            data = await client.db('store').collection('products').find({$or:[ {Title: { $regex: query, $options: 'i' }}, {'Variant SKU': query}]}, {projection: {_id: 1, Title: 1, 'Variant SKU': 1, 'Variant Price': 1, 'Image Src': 1}}).toArray();
+        }
+        else data = await client.db('store').collection('products').find({}, {projection: {_id: 1, Title: 1, 'Variant SKU': 1, 'Variant Price': 1, 'Image Src': 1}}).toArray();
+        
         const products: Product[] = data.map((product) => {
             return {
                 _id: product._id.toString(), 
