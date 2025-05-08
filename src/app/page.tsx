@@ -4,7 +4,7 @@ import ProductGrid from "@/components/ProductGrid";
 import Search from "@/components/Search";
 import { CartItem, Product } from "@/lib/constants";
 import { getProducts } from "./api/products/getProducts";
-import CartCard from "@/components/CartCard";
+import CartList from "@/components/CartList";
 import { getCart } from "./api/cart/getCart";
 
 export default function Home() {
@@ -42,11 +42,7 @@ export default function Home() {
       </div>
       <div className="w-1/3 ml-6 mt-2 sm:hidden md:block">
         <h1 className="text-2xl font-semibold m-1">Cart</h1>
-        {cart !== undefined && cart.length > 0 ? (
-          <CartCard product={cart[0]} />
-        ) : (
-          <p className="ml-2 font-medium text-red-800">No items in cart.</p>
-        )}
+        <CartList cart={cart} />
       </div>
     </div>
   );

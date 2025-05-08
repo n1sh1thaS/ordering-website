@@ -1,11 +1,25 @@
 import React from "react";
 import { Product } from "@/lib/constants";
 import { TbShoppingCartPlus } from "react-icons/tb";
+import { addItem } from "@/app/api/cart/addItem";
 
 interface Props {
   product: Product;
 }
 export default function ProductCard({ product }: Props) {
+  const handleAddItem = async () => {
+    try {
+      await addItem({
+        product_id: product._id,
+        image: product.image,
+        title: product.title,
+        sku: product.sku,
+        price: product.price,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <div className="h-[280px] w-[220px] flex-shrink flex flex-col bg-slate-100 shadow-lg rounded-2xl hover:bg-slate-200 transition-all">
       <img
@@ -25,6 +39,7 @@ export default function ProductCard({ product }: Props) {
       </div>
       <div className="flex justify-end pr-3 pb-3">
         <TbShoppingCartPlus
+          onClick={handleAddItem}
           size={25}
           className="transition-transform hover:scale-115 cursor-pointer"
         />

@@ -20,7 +20,6 @@ export async function getCart(){
                 price: Number(item.price)
             }
         })
-        console.log(data)
         return cart || [];
     }
     catch (err) {
