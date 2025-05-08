@@ -5,7 +5,6 @@ export async function addItem(item: {product_id: string, title: string, sku: str
     try {
         const client = await clientPromise;
         await client.db('store').collection('cart').insertOne(item)
-        console.log('item added')
     }
     catch (err) {
         console.error(err)
