@@ -5,3 +5,12 @@ export interface Product {
     sku: string;
     price: number;
 }
+
+export interface CartItem {
+    _id: string;
+    product_id: string;
+    image: string;
+    price: number;
+    sku: string;
+    title: string;
+}
