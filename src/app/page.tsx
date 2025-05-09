@@ -1,20 +1,26 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProductGrid from "@/components/ProductGrid";
 import Search from "@/components/Search";
 import { Product } from "@/lib/constants";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 
 export default function Home() {
   const [products, setProducts] = useState<Product[] | undefined>([]);
   const [query, setQuery] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
 
+  const [chatHistory, setChatHistory] = useState<string[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const chatEndRef = useRef<HTMLDivElement>(null);
+  const [chatVisibility, setChatVisibility] = useState<boolean>(false);
+
   useEffect(() => {
     async function fetchAllProducts() {
       try {
         setLoading(true);
         const data: Product[] | undefined = await fetch(
-          `/api/products/?query=${query}`,
+          `/api/products?query=${query}`,
           { method: "GET" }
         ).then(async (res) => {
           return await res.json();
@@ -30,11 +36,62 @@ export default function Home() {
     fetchAllProducts();
   }, [query]);
 
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView();
+  }, [chatHistory]);
+
+  const handleKeyDown = (e: { key: string }) => {
+    if (e.key === "Enter" && inputRef.current) {
+      setChatHistory([...chatHistory, inputRef.current.value]);
+      inputRef.current.value = "";
+    }
+  };
+
+  const handleChatVisibility = () => {
+    setChatVisibility(!chatVisibility);
+  };
+
   return (
-    <div className="max-w-screen flex flex-row justify-between items-start p-5 font-[family-name:var(--font-geist-sans)]">
-      <div className="max-w-2/3">
+    <div className="max-w-screen flex flex-row justify-center items-start p-5 font-[family-name:var(--font-geist-sans)]">
+      <div className="max-w-[90%]">
         <Search setQuery={setQuery} />
         <ProductGrid products={products} loading={loading} />
+        {chatVisibility ? (
+          <div className="w-[50vw] md:w-[20vw] h-[40%] bg-slate-300 shadow-2xl shadow-sky-500 rounded-t-2xl px-3 fixed bottom-0 right-2">
+            <div className="flex justify-between items-center pt-3">
+              <p className="font-semibold">Query by Chat</p>
+              <FaChevronUp onClick={handleChatVisibility} />
+            </div>
+            <p className="text-sm font-light pb-3">
+              If the chat is open, products are queried by your latest message.
+            </p>
+            <div className="flex-1 overflow-y-auto max-h-[68%] flex flex-col gap-2">
+              {chatHistory.map((message, idx) => (
+                <p
+                  key={idx}
+                  className="p-1 px-2 min-h-7 rounded-xl bg-blue-400"
+                >
+                  {message}
+                </p>
+              ))}
+              <div ref={chatEndRef} />
+            </div>
+            <input
+              type="text"
+              ref={inputRef}
+              placeholder={"Show me electronics..."}
+              className="absolute bottom-2 bg-white rounded-md p-2 w-[95%]"
+              onKeyDown={handleKeyDown}
+            />
+          </div>
+        ) : (
+          <div className="w-[50vw] md:w-[20vw] h-[5%] bg-slate-300 rounded-t-2xl px-3 fixed bottom-0 right-2">
+            <div className="flex justify-between items-center py-3">
+              <p className="font-semibold">Query by Chat</p>
+              <FaChevronDown onClick={handleChatVisibility} />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
