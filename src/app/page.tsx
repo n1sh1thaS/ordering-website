@@ -4,6 +4,7 @@ import ProductGrid from "@/components/ProductGrid";
 import Search from "@/components/Search";
 import { Product } from "@/lib/constants";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
+import { getQuery } from "@/lib/chat";
 
 export default function Home() {
   const [products, setProducts] = useState<Product[] | undefined>([]);
@@ -19,12 +20,26 @@ export default function Home() {
     async function fetchAllProducts() {
       try {
         setLoading(true);
-        const data: Product[] | undefined = await fetch(
-          `/api/products?query=${query}`,
-          { method: "GET" }
-        ).then(async (res) => {
-          return await res.json();
-        });
+        let data: Product[] | undefined;
+        // query by chat
+        if (chatVisibility && chatHistory.length > 0) {
+          const responseUrl = await getQuery(
+            chatHistory[chatHistory.length - 1]
+          );
+          data = await fetch(`/api/products${responseUrl}`, {
+            method: "GET",
+          }).then(async (res) => {
+            return await res.json();
+          });
+        }
+        // query by search or display all products
+        else {
+          data = await fetch(`/api/products?query=${query}`, {
+            method: "GET",
+          }).then(async (res) => {
+            return await res.json();
+          });
+        }
         setProducts(data);
         setLoading(false);
       } catch (err) {
@@ -34,7 +49,7 @@ export default function Home() {
     }
 
     fetchAllProducts();
-  }, [query]);
+  }, [query, chatHistory.length, chatVisibility]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView();
@@ -62,19 +77,16 @@ export default function Home() {
               <p className="font-semibold">Query by Chat</p>
               <FaChevronUp onClick={handleChatVisibility} />
             </div>
-            <p className="text-sm font-light pb-3">
+            <p className="text-sm pb-2">
               If the chat is open, products are queried by your latest message.
             </p>
             <div className="flex-1 overflow-y-auto max-h-[68%] flex flex-col gap-2">
               {chatHistory.map((message, idx) => (
-                <p
-                  key={idx}
-                  className="p-1 px-2 min-h-7 rounded-xl bg-blue-400"
-                >
+                <p key={idx} className="p-1 px-2 rounded-xl bg-blue-400">
                   {message}
                 </p>
               ))}
-              <div ref={chatEndRef} />
+              <div ref={chatEndRef} className="p-4" />
             </div>
             <input
               type="text"
