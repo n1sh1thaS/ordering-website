@@ -1,16 +1,20 @@
+"use client";
+
 import { CartItem } from "@/lib/constants";
-import { Divide } from "lucide-react";
 import React from "react";
 import CartCard from "./CartCard";
 
 interface Props {
   cart: CartItem[] | undefined;
   fetchCart: () => Promise<void>;
+  loading: boolean;
 }
-export default function CartList({ cart, fetchCart }: Props) {
+export default function CartList({ cart, fetchCart, loading }: Props) {
   return (
     <div className="flex flex-col gap-3">
-      {cart && cart.length > 0 ? (
+      {loading ? (
+        <p className="ml-2 font-medium">Loading...</p>
+      ) : cart && cart.length > 0 ? (
         cart.map((item) => (
           <CartCard key={item._id} product={item} fetchCart={fetchCart} />
         ))
