@@ -28,7 +28,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="flex flex-row gap-9 mt-9 ml-9">
+        <div className="flex flex-row gap-5 mt-9 ml-9">
           {Object.keys(links).map((link) => (
             <div key={link} className="flex flex-col items-center">
               <Link href={links[link as keyof typeof links]}>

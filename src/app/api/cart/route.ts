@@ -3,8 +3,25 @@ import clientPromise from "@/lib/db";
 import { WithId } from "mongodb";
 import { Document } from "bson"
 import { CartItem } from "@/lib/constants";
+import { ObjectId } from "mongodb";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function getCart(){
+export async function POST(req: NextRequest){
+    try {
+        const item : {product_id: string, title: string, sku: string, image: string, price: number} = await req.json()
+        if (!item.product_id ){
+            return NextResponse.json({error: 'Invalid product'}, {status: 400 })
+        }
+        const client = await clientPromise;
+        await client.db('store').collection('cart').insertOne(item)
+        return NextResponse.json({status: 201})
+    }
+    catch (err) {
+        console.error(err)
+    }
+}
+
+export async function GET(){
     try {
         const client = await clientPromise;
 
@@ -20,7 +37,7 @@ export async function getCart(){
                 price: Number(item.price)
             }
         })
-        return cart || [];
+        return cart ? NextResponse.json(cart)  : NextResponse.json([])
     }
     catch (err) {
         console.error(err)

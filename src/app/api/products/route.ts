@@ -1,10 +1,13 @@
 "use server";
 import clientPromise from "@/lib/db";
+import { NextResponse, NextRequest } from "next/server";
 import { WithId } from "mongodb";
 import { Document } from "bson"
 import { Product } from "@/lib/constants";
 
-export async function getProducts(query: string){
+export async function GET(req: NextRequest){
+    const query = new URL(req.url).searchParams.get('query');
+
     try {
         const client = await clientPromise;
 
@@ -23,7 +26,7 @@ export async function getProducts(query: string){
                 price: Number(product['Variant Price'])
             }
         })
-        return products || [];
+        return products ? NextResponse.json(products) : NextResponse.json([]);
     }
     catch (err) {
         console.error(err)

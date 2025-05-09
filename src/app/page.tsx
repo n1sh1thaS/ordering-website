@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import ProductGrid from "@/components/ProductGrid";
 import Search from "@/components/Search";
 import { Product } from "@/lib/constants";
-import { getProducts } from "./api/products/getProducts";
-import Link from "next/link";
 
 export default function Home() {
   const [products, setProducts] = useState<Product[] | undefined>([]);
@@ -13,7 +11,12 @@ export default function Home() {
   useEffect(() => {
     async function fetchAllProducts() {
       try {
-        const data: Product[] | undefined = await getProducts(query);
+        const data: Product[] | undefined = await fetch(
+          `/api/products/?query=${query}`,
+          { method: "GET" }
+        ).then(async (res) => {
+          return await res.json();
+        });
         setProducts(data);
       } catch (err) {
         console.error(err);

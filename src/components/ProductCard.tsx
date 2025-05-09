@@ -1,7 +1,6 @@
 import React from "react";
 import { Product } from "@/lib/constants";
 import { TbShoppingCartPlus } from "react-icons/tb";
-import { addItem } from "@/app/api/cart/addItem";
 
 interface Props {
   product: Product;
@@ -9,13 +8,14 @@ interface Props {
 export default function ProductCard({ product }: Props) {
   const handleAddItem = async () => {
     try {
-      await addItem({
+      const item = {
         product_id: product._id,
         image: product.image,
         title: product.title,
         sku: product.sku,
         price: product.price,
-      });
+      };
+      await fetch(`/api/cart`, { method: "POST", body: JSON.stringify(item) });
     } catch (err) {
       console.error(err);
     }

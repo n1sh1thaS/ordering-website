@@ -3,14 +3,17 @@
 import CartList from "@/components/CartList";
 import { CartItem } from "@/lib/constants";
 import React, { useEffect, useState } from "react";
-import { getCart } from "../api/cart/getCart";
 
 export default function Page() {
   const [cart, setCart] = useState<CartItem[] | undefined>([]);
 
   async function fetchCart() {
     try {
-      const cart: CartItem[] | undefined = await getCart();
+      const cart: CartItem[] | undefined = await fetch(`/api/cart`, {
+        method: "GET",
+      }).then(async (res) => {
+        return await res.json();
+      });
       setCart(cart);
     } catch (err) {
       console.error(err);

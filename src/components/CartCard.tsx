@@ -1,7 +1,6 @@
 import React from "react";
 import { Product } from "@/lib/constants";
 import { TiDeleteOutline } from "react-icons/ti";
-import { removeItem } from "@/app/api/cart/removeItem";
 
 interface Props {
   product: Product;
@@ -11,7 +10,9 @@ interface Props {
 export default function CartCard({ product, fetchCart }: Props) {
   const handleDeleteItem = async () => {
     try {
-      await removeItem(product._id).then(() => fetchCart());
+      await fetch(`/api/cart/${product._id}`, { method: "DELETE" }).then(
+        async () => await fetchCart()
+      );
     } catch (err) {
       console.error(err);
     }
