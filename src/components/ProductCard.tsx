@@ -21,11 +21,11 @@ export default function ProductCard({ product }: Props) {
     }
   };
   return (
-    <div className="h-[280px] w-[220px] flex-shrink flex flex-col bg-slate-100 shadow-lg rounded-2xl hover:bg-slate-200 transition-all">
+    <div className="h-[300px] max-h-[300px] w-[220px] flex-shrink flex flex-col bg-slate-100 shadow-lg rounded-2xl hover:bg-slate-200 transition-all">
       <img
         src={product.image || "./product-placeholder.jpg"}
         alt={product.title}
-        className="max-w-full h-2/3 p-1 object-cover rounded-2xl"
+        className="max-w-full min-h-[60%] h-[60%] p-1 object-cover rounded-2xl"
       />
       <div className="p-3 pb-1">
         <p
@@ -41,7 +41,7 @@ export default function ProductCard({ product }: Props) {
         <TbShoppingCartPlus
           onClick={handleAddItem}
           size={25}
-          className="transition-transform hover:scale-115 cursor-pointer"
+          className="transition-transform hover:scale-115 hover:text-green-900 cursor-pointer"
         />
       </div>
     </div>

@@ -14,3 +14,5 @@ export interface CartItem {
     sku: string;
     title: string;
 }
+
+export const links = {Products: '/', Cart: '/cart'}

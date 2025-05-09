@@ -5,12 +5,13 @@ import { removeItem } from "@/app/api/cart/removeItem";
 
 interface Props {
   product: Product;
+  fetchCart: () => Promise<void>;
 }
 
-export default function CartCard({ product }: Props) {
+export default function CartCard({ product, fetchCart }: Props) {
   const handleDeleteItem = async () => {
     try {
-      await removeItem(product._id);
+      await removeItem(product._id).then(() => fetchCart());
     } catch (err) {
       console.error(err);
     }
