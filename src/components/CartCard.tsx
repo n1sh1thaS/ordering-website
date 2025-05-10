@@ -32,7 +32,6 @@ export default function CartCard({ product, fetchCart }: Props) {
   };
   return (
     <div className="h-[120px] w-[80vw] md:w-[50vw] flex-shrink flex flex-row bg-slate-100 shadow-lg rounded-2xl hover:bg-slate-200">
-      <Toaster />
       <img
         src={product.image || "./product-placeholder.jpg"}
         alt={product.title}

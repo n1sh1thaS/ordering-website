@@ -5,6 +5,7 @@ import "./globals.css";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { links } from "@/lib/constants";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Toaster />
         <div className="flex flex-row gap-5 mt-9 ml-9">
           {Object.keys(links).map((link) => (
             <div key={link} className="flex flex-col items-center">

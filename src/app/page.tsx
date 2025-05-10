@@ -83,7 +83,6 @@ export default function Home() {
   return (
     <div className="max-w-screen flex flex-col justify-between h-[90vh]">
       <div className="max-w-screen flex flex-row justify-center items-start p-5 font-[family-name:var(--font-geist-sans)]">
-        <Toaster />
         <div className="max-w-[90%]">
           <Search setQuery={setQuery} />
           <ProductGrid products={products} loading={loading} />
