@@ -3,7 +3,6 @@ import clientPromise from "@/lib/db";
 import { WithId } from "mongodb";
 import { Document } from "bson"
 import { CartItem } from "@/lib/constants";
-import { ObjectId } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest){
@@ -18,6 +17,7 @@ export async function POST(req: NextRequest){
     }
     catch (err) {
         console.error(err)
+        return NextResponse.json({error: 'Error adding product to cart', status: 500})
     }
 }
 
@@ -41,5 +41,7 @@ export async function GET(){
     }
     catch (err) {
         console.error(err)
+        return NextResponse.json({error: 'Error fetching cart', status: 500})
+
     }
 }

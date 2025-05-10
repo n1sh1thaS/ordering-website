@@ -5,6 +5,7 @@ import Search from "@/components/Search";
 import { Product } from "@/lib/constants";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import { getQuery } from "@/lib/chat";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Home() {
   const [products, setProducts] = useState<Product[] | undefined>([]);
@@ -29,6 +30,10 @@ export default function Home() {
           data = await fetch(`/api/products${responseUrl}`, {
             method: "GET",
           }).then(async (res) => {
+            if ("error" in res)
+              return toast.error("Error fetching products", {
+                position: "top-right",
+              });
             return await res.json();
           });
         }
@@ -37,6 +42,10 @@ export default function Home() {
           data = await fetch(`/api/products?query=${query}`, {
             method: "GET",
           }).then(async (res) => {
+            if ("error" in res)
+              return toast.error("Error fetching products", {
+                position: "top-right",
+              });
             return await res.json();
           });
         }
@@ -44,6 +53,7 @@ export default function Home() {
         setLoading(false);
       } catch (err) {
         setLoading(false);
+        toast.error("Error fetching products", { position: "top-right" });
         console.error(err);
       }
     }
@@ -68,6 +78,7 @@ export default function Home() {
 
   return (
     <div className="max-w-screen flex flex-row justify-center items-start p-5 font-[family-name:var(--font-geist-sans)]">
+      <Toaster />
       <div className="max-w-[90%]">
         <Search setQuery={setQuery} />
         <ProductGrid products={products} loading={loading} />

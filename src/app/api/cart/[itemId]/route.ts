@@ -12,5 +12,6 @@ export async function DELETE(req: NextRequest, context: any){
     }
     catch (err) {
         console.error(err)
+        return NextResponse.json({error: 'Error removing item', status: 500})
     }
 }

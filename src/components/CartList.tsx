@@ -6,7 +6,7 @@ import CartCard from "./CartCard";
 
 interface Props {
   cart: CartItem[] | undefined;
-  fetchCart: () => Promise<void>;
+  fetchCart: () => Promise<string | undefined>;
   loading: boolean;
 }
 export default function CartList({ cart, fetchCart, loading }: Props) {
