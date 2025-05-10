@@ -3,7 +3,7 @@ import clientPromise from "@/lib/db";
 import { NextResponse, NextRequest } from "next/server";
 import { WithId } from "mongodb";
 import { Document } from "bson"
-import { Product } from "@/lib/constants";
+import { Product, totalPages, pageSize } from "@/lib/constants";
 
 export async function GET(req: NextRequest){
     try {
@@ -11,6 +11,7 @@ export async function GET(req: NextRequest){
 
         // get search params
         const searchParams = new URL(req.url).searchParams
+        const page = searchParams.get('page')
         const query = searchParams.get('query');
         const title = searchParams.get('title')
         const type = searchParams.get('type')
@@ -18,6 +19,8 @@ export async function GET(req: NextRequest){
         const maxPrice = searchParams.get('maxPrice')
 
         let data: WithId<Document>[];
+
+        if(!page || Number(page) <= 0 || Number(page) > totalPages) return NextResponse.json({'error': 'Error fetching products', status: 500})
 
         // search by chat input
         if(title || type || sku || maxPrice){
@@ -36,14 +39,14 @@ export async function GET(req: NextRequest){
                 filter["Variant Price"] = { $lte: parseFloat(maxPrice) };
             }
 
-            data = await client.db('store').collection('products').find(filter, {projection: {_id: 1, Title: 1, 'Variant SKU': 1, 'Variant Price': 1, 'Image Src': 1}}).toArray();
+            data = await client.db('store').collection('products').find(filter, {projection: {_id: 1, Title: 1, 'Variant SKU': 1, 'Variant Price': 1, 'Image Src': 1}}).skip((Number(page) - 1) * pageSize).limit(pageSize).toArray();
         }
         // search by sku or title
         else if (query && query !== ''){
-            data = await client.db('store').collection('products').find({$or:[ {Title: { $regex: query, $options: 'i' }}, {'Variant SKU': query}]}, {projection: {_id: 1, Title: 1, 'Variant SKU': 1, 'Variant Price': 1, 'Image Src': 1}}).toArray();
+            data = await client.db('store').collection('products').find({$or:[ {Title: { $regex: query, $options: 'i' }}, {'Variant SKU': query}]}, {projection: {_id: 1, Title: 1, 'Variant SKU': 1, 'Variant Price': 1, 'Image Src': 1}}).skip((Number(page) - 1) * pageSize).limit(pageSize).toArray();
         }
         // all products
-        else data = await client.db('store').collection('products').find({}, {projection: {_id: 1, Title: 1, 'Variant SKU': 1, 'Variant Price': 1, 'Image Src': 1}}).toArray();
+        else data = await client.db('store').collection('products').find({}, {projection: {_id: 1, Title: 1, 'Variant SKU': 1, 'Variant Price': 1, 'Image Src': 1}}).skip((Number(page) - 1) * pageSize).limit(pageSize).toArray();
         
         const products: Product[] = data.map((product) => {
             return {

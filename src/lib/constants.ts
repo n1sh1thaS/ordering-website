@@ -16,3 +16,6 @@ export interface CartItem {
 }
 
 export const links = {Products: '/', Cart: '/cart'}
+
+export const pageSize = 15;
+export const totalPages = 35;
