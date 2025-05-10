@@ -3,6 +3,7 @@
 import { CartItem } from "@/lib/constants";
 import React from "react";
 import CartCard from "./CartCard";
+import CartListSkeleton from "./CartListSkeleton";
 
 interface Props {
   cart: CartItem[] | undefined;
@@ -10,11 +11,11 @@ interface Props {
   loading: boolean;
 }
 export default function CartList({ cart, fetchCart, loading }: Props) {
-  return (
+  return loading ? (
+    <CartListSkeleton />
+  ) : (
     <div className="flex flex-col gap-3">
-      {loading ? (
-        <p className="ml-2 font-medium">Loading...</p>
-      ) : cart && cart.length > 0 ? (
+      {cart && cart.length > 0 ? (
         cart.map((item) => (
           <CartCard key={item._id} product={item} fetchCart={fetchCart} />
         ))
