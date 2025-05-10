@@ -81,7 +81,7 @@ export default function Home() {
   };
 
   return (
-    <div className="max-w-screen flex flex-col justify-center">
+    <div className="max-w-screen flex flex-col justify-between h-[90vh]">
       <div className="max-w-screen flex flex-row justify-center items-start p-5 font-[family-name:var(--font-geist-sans)]">
         <Toaster />
         <div className="max-w-[90%]">
@@ -129,7 +129,7 @@ export default function Home() {
           )}
         </div>
       </div>
-      <div className="mb-14 mt-5 z-0">
+      <div className=" mb-14 mt-5 z-0 bottom-4">
         <ResponsivePagination
           current={page}
           total={totalPages}
