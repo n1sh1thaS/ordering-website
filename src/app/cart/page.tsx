@@ -33,7 +33,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="max-w-screen flex flex-row justify-between items-start p-5 font-[family-name:var(--font-geist-sans)]">
+    <div className="max-w-full flex flex-row justify-between items-start p-5 font-[family-name:var(--font-geist-sans)]">
       <Toaster />
       <div className="w-1/3 ml-6 mt-2 sm:hidden md:block">
         <CartList cart={cart} fetchCart={fetchCart} loading={loading} />

@@ -31,23 +31,21 @@ export default function CartCard({ product, fetchCart }: Props) {
     }
   };
   return (
-    <div className="h-[120px] w-full flex-shrink flex flex-row bg-slate-100 shadow-lg rounded-2xl hover:bg-slate-200 transition-all">
+    <div className="h-[120px] w-[80vw] md:w-[50vw] flex-shrink flex flex-row bg-slate-100 shadow-lg rounded-2xl hover:bg-slate-200">
       <Toaster />
       <img
         src={product.image || "./product-placeholder.jpg"}
         alt={product.title}
         className="w-1/4 h-full p-1 object-cover rounded-2xl"
       />
-      <div className="flex flex-row justify-between w-3/4">
+      <div className="flex flex-row justify-between w-full">
         <div className="p-3 pb-1">
-          <div className="w-[17rem]">
-            <p
-              className="font-semibold truncate"
-              title={product.title || "Title Unavailable"}
-            >
-              {product.title || "Title Unavailable"}
-            </p>
-          </div>
+          <p
+            className="font-semibold line-clamp-2"
+            title={product.title || "Title Unavailable"}
+          >
+            {product.title || "Title Unavailable"}
+          </p>
           <p>${product.price}</p>
           <p>{product.sku || "SKU Unavailable"}</p>
         </div>

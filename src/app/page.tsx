@@ -117,7 +117,7 @@ export default function Home() {
               />
             </div>
           ) : (
-            <div className="z-10 w-[50vw] md:w-[20vw] h-[5%] bg-slate-300 rounded-t-2xl px-3 fixed bottom-0 right-2">
+            <div className="z-0 w-[50vw] md:w-[20vw] h-[5%] bg-slate-300 rounded-t-2xl px-3 fixed bottom-0 right-2">
               <div className="flex justify-between items-center py-3">
                 <p className="font-semibold">Query by Chat</p>
                 <FaChevronDown
@@ -129,7 +129,7 @@ export default function Home() {
           )}
         </div>
       </div>
-      <div className=" mb-14 mt-5 z-0 bottom-4">
+      <div className=" mb-14 mt-5 z-10 bottom-4">
         <ResponsivePagination
           current={page}
           total={totalPages}
